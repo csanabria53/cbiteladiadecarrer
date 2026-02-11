@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="estilos.css">  
 </head>  
 <body>  
+    <div id="fade-overlay"></div>
+
     <audio id="snd-collect" src="collect.mp3"></audio>
     <audio id="snd-hit" src="hit.mp3"></audio>
     <audio id="snd-success" src="success.mp3"></audio>
@@ -16,6 +18,11 @@
         <img src="inicio.png" id="btn-home" class="control-icon" onclick="volverInicio()">
         <img src="reiniciar.png" id="btn-reset" class="control-icon" onclick="reiniciarNivelActual()">
         <img src="salir.png" id="btn-exit" class="control-icon" onclick="salirJuego()">
+    </div>
+
+    <div id="mobile-controls">
+        <div id="btn-left" class="touch-button">◀</div>
+        <div id="btn-right" class="touch-button">▶</div>
     </div>
 
     <div id="level-intro" class="hidden">  
@@ -53,15 +60,17 @@
     <div id="level-trivia-container" class="hidden">  
         <div id="trivia-sort-content">  
             <h1 class="titulo-grande">NIVEL 4: SABIDURÍA</h1>  
-            <div id="category-selection" class="container-botones">  
+            <div id="category-selection">  
                 <p class="instruccion-grande">Elige una categoría:</p>  
-                <button class="step-card" onclick="startTrivia('botanica')">1. BOTÁNICA</button>  
-                <button class="step-card" onclick="startTrivia('preparacion')">2. PREPARACIÓN</button>  
-                <button class="step-card" onclick="startTrivia('economia')">3. ECONOMÍA</button>  
-                <button class="step-card" onclick="startTrivia('curiosidades')">4. CURIOSIDADES</button>  
+                <div class="grid-categorias">
+                    <button class="step-card cat-btn" onclick="startTrivia('botanica')">1. BOTÁNICA</button>  
+                    <button class="step-card cat-btn" onclick="startTrivia('preparacion')">2. PREPARACIÓN</button>  
+                    <button class="step-card cat-btn" onclick="startTrivia('economia')">3. ECONOMÍA</button>  
+                    <button class="step-card cat-btn" onclick="startTrivia('curiosidades')">4. CURIOSIDADES</button>
+                </div>  
             </div>  
             <div id="question-display" class="hidden">  
-                <div id="question-text" class="empty-slot" style="min-height: 150px;">Pregunta...</div>  
+                <div id="question-text" class="empty-slot">Pregunta...</div>  
                 <div id="trivia-options" class="container-botones"></div>  
                 <div id="trivia-feedback" class="feedback-estilo"></div>  
             </div>  
