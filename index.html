@@ -1,82 +1,84 @@
-<!DOCTYPE html>  
-<html lang="es">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
-    <title>Cacao Adventure Miranda</title>  
-    <link rel="stylesheet" href="estilos.css">  
-</head>  
-<body>  
-    <div id="fade-overlay"></div>
-
-    <audio id="snd-collect" src="collect.mp3"></audio>
-    <audio id="snd-hit" src="hit.mp3"></audio>
-    <audio id="snd-success" src="success.mp3"></audio>
-    <audio id="snd-win" src="level-win.mp3"></audio>
-
-    <div id="game-controls" class="hidden">
-        <img src="inicio.png" id="btn-home" class="control-icon" onclick="volverInicio()">
-        <img src="reiniciar.png" id="btn-reset" class="control-icon" onclick="reiniciarNivelActual()">
-        <img src="salir.png" id="btn-exit" class="control-icon" onclick="salirJuego()">
-    </div>
-
-    <div id="mobile-controls">
-        <div id="btn-left" class="touch-button">◀</div>
-        <div id="btn-right" class="touch-button">▶</div>
-    </div>
-
-    <div id="level-intro" class="hidden">  
-        <div id="intro-content">  
-            <h2 id="intro-title">NIVEL</h2>  
-            <p id="intro-desc">Cargando...</p>  
-        </div>  
-    </div>  
-
-    <div id="game-ui">  
-        <div id="level-indicator">NIVEL 1: LA COSECHA</div>  
-        <div id="score-container">  
-            <span id="score-label">CACAOS:</span>  
-            <span id="score-value">0 / 10</span>  
-        </div>  
-    </div>  
-      
-    <canvas id="gameCanvas"></canvas>  
-    <div id="jumpAreaInvisible"></div>  
-
-    <div id="transition-overlay" class="hidden">  
-        <button id="btn-next-level">¡LO LOGRÉ! CONTINUAR</button>  
-    </div>  
-
-    <div id="level-sort-container" class="hidden">  
-        <div id="level-sort-content">  
-            <h1 class="titulo-grande">NIVEL 2: EL PROCESO</h1>  
-            <p class="instruccion-grande">Selecciona el orden correcto:</p>  
-            <div id="target-slot" class="empty-slot">Toca los pasos abajo...</div>  
-            <div id="options-container" class="container-botones"></div>  
-            <div id="feedback-l2" class="feedback-estilo"></div>  
-        </div>  
-    </div>  
-
-    <div id="level-trivia-container" class="hidden">  
-        <div id="trivia-sort-content">  
-            <h1 class="titulo-grande">NIVEL 4: SABIDURÍA</h1>  
-            <div id="category-selection">  
-                <p class="instruccion-grande">Elige una categoría:</p>  
-                <div class="grid-categorias">
-                    <button class="step-card cat-btn" onclick="startTrivia('botanica')">1. BOTÁNICA</button>  
-                    <button class="step-card cat-btn" onclick="startTrivia('preparacion')">2. PREPARACIÓN</button>  
-                    <button class="step-card cat-btn" onclick="startTrivia('economia')">3. ECONOMÍA</button>  
-                    <button class="step-card cat-btn" onclick="startTrivia('curiosidades')">4. CURIOSIDADES</button>
-                </div>  
-            </div>  
-            <div id="question-display" class="hidden">  
-                <div id="question-text" class="empty-slot">Pregunta...</div>  
-                <div id="trivia-options" class="container-botones"></div>  
-                <div id="trivia-feedback" class="feedback-estilo"></div>  
-            </div>  
-        </div>  
-    </div>  
-
-    <script src="cacao.js"></script>  
-</body>  
+<!DOCTYPE html>   
+<html lang="es">   
+<head>   
+    <meta charset="UTF-8">   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">   
+    <title>Cacao Adventure Miranda</title>   
+    <link rel="stylesheet" href="estilos.css">   
+</head>   
+<body>   
+    <div id="fade-overlay"></div> 
+ 
+    <audio id="snd-collect" src="collect.mp3"></audio> 
+    <audio id="snd-hit" src="hit.mp3"></audio> 
+    <audio id="snd-success" src="success.mp3"></audio> 
+    <audio id="snd-win" src="level-win.mp3"></audio> 
+ 
+    <div id="game-controls" class="hidden"> 
+        <img src="inicio.png" id="btn-home" class="control-icon" onclick="volverInicio()"> 
+        <img src="reiniciar.png" id="btn-reset" class="control-icon" onclick="reiniciarNivelActual()"> 
+        <img src="salir.png" id="btn-exit" class="control-icon" onclick="salirJuego()"> 
+    </div> 
+ 
+    <div id="mobile-controls"> 
+        <div class="move-group">
+            <div id="btn-left" class="touch-button">◀</div> 
+            <div id="btn-right" class="touch-button">▶</div> 
+        </div>
+        <div id="btn-jump" class="touch-button jump-btn">▲</div> 
+    </div> 
+ 
+    <div id="level-intro" class="hidden">    
+        <div id="intro-content">    
+            <h2 id="intro-title">NIVEL</h2>    
+            <p id="intro-desc">Cargando...</p>    
+        </div>    
+    </div>    
+ 
+    <div id="game-ui">    
+        <div id="level-indicator">NIVEL 1: LA COSECHA</div>    
+        <div id="score-container">    
+            <span id="score-label">CACAOS:</span>    
+            <span id="score-value">0 / 10</span>    
+        </div>    
+    </div>    
+        
+    <canvas id="gameCanvas"></canvas>    
+ 
+    <div id="transition-overlay" class="hidden">    
+        <button id="btn-next-level">¡LO LOGRÉ! CONTINUAR</button>    
+    </div>    
+ 
+    <div id="level-sort-container" class="hidden">    
+        <div id="level-sort-content">    
+            <h1 class="titulo-grande">NIVEL 2: EL PROCESO</h1>    
+            <p class="instruccion-grande">Selecciona el orden correcto:</p>    
+            <div id="target-slot" class="empty-slot">Toca los pasos abajo...</div>    
+            <div id="options-container" class="container-botones"></div>    
+            <div id="feedback-l2" class="feedback-estilo"></div>    
+        </div>    
+    </div>    
+ 
+    <div id="level-trivia-container" class="hidden">    
+        <div id="trivia-sort-content">    
+            <h1 class="titulo-grande">NIVEL 4: SABIDURÍA</h1>    
+            <div id="category-selection">    
+                <p class="instruccion-grande">Elige una categoría:</p>    
+                <div class="grid-categorias">  
+                    <button class="step-card cat-btn" onclick="startTrivia('botanica')">1. BOTÁNICA</button>    
+                    <button class="step-card cat-btn" onclick="startTrivia('preparacion')">2. PREPARACIÓN</button>    
+                    <button class="step-card cat-btn" onclick="startTrivia('economia')">3. ECONOMÍA</button>    
+                    <button class="step-card cat-btn" onclick="startTrivia('curiosidades')">4. CURIOSIDADES</button>  
+                </div>    
+            </div>    
+            <div id="question-display" class="hidden">    
+                <div id="question-text" class="empty-slot">Pregunta...</div>    
+                <div id="trivia-options" class="container-botones"></div>    
+                <div id="trivia-feedback" class="feedback-estilo"></div>    
+            </div>    
+        </div>    
+    </div>    
+ 
+    <script src="cacao.js"></script>    
+</body>    
 </html>
