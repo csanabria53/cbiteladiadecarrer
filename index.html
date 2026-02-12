@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="estilos.css">   
 </head>   
 <body>   
+    <div id="rotate-message">
+        <div class="rotate-icon">📱🔄</div>
+        <p>Gira la pantalla para una mejor experiencia</p>
+    </div>
+
     <div id="fade-overlay"></div> 
  
     <audio id="snd-collect" src="collect.mp3"></audio> 
@@ -25,8 +30,7 @@
             <div id="btn-left" class="touch-button">◀</div> 
             <div id="btn-right" class="touch-button">▶</div> 
         </div>
-        <div id="btn-jump" class="touch-button jump-btn">▲</div> 
-    </div> 
+        </div> 
  
     <div id="level-intro" class="hidden">    
         <div id="intro-content">    
@@ -65,9 +69,9 @@
             <div id="category-selection">    
                 <p class="instruccion-grande">Elige una categoría:</p>    
                 <div class="grid-categorias">  
-                    <button class="step-card cat-btn" onclick="startTrivia('botanica')">1. BOTÁNICA</button>    
-                    <button class="step-card cat-btn" onclick="startTrivia('preparacion')">2. PREPARACIÓN</button>    
-                    <button class="step-card cat-btn" onclick="startTrivia('economia')">3. ECONOMÍA</button>    
+                    <button class="step-card cat-btn" onclick="startTrivia('botanica')">1. BOTÁNICA</button>     
+                    <button class="step-card cat-btn" onclick="startTrivia('preparacion')">2. PREPARACIÓN</button>     
+                    <button class="step-card cat-btn" onclick="startTrivia('economia')">3. ECONOMÍA</button>     
                     <button class="step-card cat-btn" onclick="startTrivia('curiosidades')">4. CURIOSIDADES</button>  
                 </div>    
             </div>    

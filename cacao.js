@@ -233,7 +233,7 @@ function morir() {
     if (!gameActive) return;  
     gameActive = false;  
     playSnd('snd-hit'); hablar("¡Oh no!");  
-    transicionSuave(() => { 
+    transicionSuave(() => {  
         introMostradaEnEsteNivel = true;  
         iniciarNivel(currentLevel);  
     }); 
@@ -246,19 +246,28 @@ function saltar() {
     }  
 }  
  
-// EVENTOS PARA CONTROLES MÓVILES
+// EVENTOS PARA CONTROLES MÓVILES MEJORADOS
 if(document.getElementById('btn-left')) { 
     // Movimiento Izquierda
-    document.getElementById('btn-left').ontouchstart = (e) => { e.preventDefault(); keys.ArrowLeft = true; }; 
-    document.getElementById('btn-left').ontouchend = (e) => { e.preventDefault(); keys.ArrowLeft = false; }; 
+    document.getElementById('btn-left').addEventListener('touchstart', (e) => { e.preventDefault(); keys.ArrowLeft = true; }); 
+    document.getElementById('btn-left').addEventListener('touchend', (e) => { e.preventDefault(); keys.ArrowLeft = false; }); 
     
     // Movimiento Derecha
-    document.getElementById('btn-right').ontouchstart = (e) => { e.preventDefault(); keys.ArrowRight = true; }; 
-    document.getElementById('btn-right').ontouchend = (e) => { e.preventDefault(); keys.ArrowRight = false; }; 
+    document.getElementById('btn-right').addEventListener('touchstart', (e) => { e.preventDefault(); keys.ArrowRight = true; }); 
+    document.getElementById('btn-right').addEventListener('touchend', (e) => { e.preventDefault(); keys.ArrowRight = false; }); 
+}
+
+// SALTO MEDIANTE TAP EN PANTALLA (CUALQUIER PARTE QUE NO SEAN LOS BOTONES)
+window.addEventListener('touchstart', (e) => {
+    if (!gameActive) return;
     
-    // Salto Móvil (NUEVO)
-    document.getElementById('btn-jump').ontouchstart = (e) => { e.preventDefault(); saltar(); };
-} 
+    // Detectamos si el toque fue en los botones de dirección para NO saltar
+    const isDirectionBtn = e.target.closest('#btn-left') || e.target.closest('#btn-right') || e.target.closest('#game-controls');
+    
+    if (!isDirectionBtn) {
+        saltar();
+    }
+}, { passive: false });
 
 document.getElementById('btn-next-level').onclick = () => {  
     document.getElementById('transition-overlay').classList.add('hidden'); 
