@@ -99,6 +99,10 @@ function transicionSuave(callback) {
  
 function iniciarNivel(num) {  
     ocultarTodo();  
+    // Reset de scroll para niveles de contenido largo en móvil
+    document.getElementById('level-sort-container').scrollTop = 0;
+    document.getElementById('level-trivia-container').scrollTop = 0;
+
     currentLevel = num; gameActive = false; score = 0; obstacles = []; cacaos = [];  
     player.x = 80; player.dy = 0; player.y = 0;  
     player.dx = 0; player.grounded = false; 
@@ -161,20 +165,17 @@ function initLevel2Sort() {
         b.innerText = s.text;  
         b.onclick = () => {  
             if(s.id === steps[stepIdx].id) {  
-                playSnd('snd-success');  
-                hablar("Bien"); 
+                playSnd('snd-success'); hablar("Bien"); 
                 target.innerText = steps[stepIdx].text;  
                 feedback.innerText = "✅ ¡CORRECTO!";  
                 feedback.style.color = "green";  
-                b.remove();  
-                stepIdx++;  
+                b.remove(); stepIdx++;  
                 if(stepIdx === steps.length) {  
                     playSnd('snd-win');  
                     feedback.innerHTML = `<button class="step-card" style="background:green; color:white; min-width:220px" onclick="transicionSuave(()=>{introMostradaEnEsteNivel=false; iniciarNivel(3)})">¡LOGRADO! IR AL NIVEL 3</button>`;  
                 } 
             } else {  
-                playSnd('snd-hit');  
-                hablar("No");  
+                playSnd('snd-hit'); hablar("No");  
                 feedback.innerText = "❌ ESE NO ES EL ORDEN";  
                 feedback.style.color = "red";  
             }  
@@ -234,8 +235,7 @@ function morir() {
     gameActive = false;  
     playSnd('snd-hit'); hablar("¡Oh no!");  
     transicionSuave(() => {  
-        introMostradaEnEsteNivel = true;  
-        iniciarNivel(currentLevel);  
+        introMostradaEnEsteNivel = true; iniciarNivel(currentLevel);  
     }); 
 } 
  
@@ -246,27 +246,18 @@ function saltar() {
     }  
 }  
  
-// EVENTOS PARA CONTROLES MÓVILES MEJORADOS
+// CONTROLES MÓVILES (TAP GLOBAL PARA SALTAR)
 if(document.getElementById('btn-left')) { 
-    // Movimiento Izquierda
     document.getElementById('btn-left').addEventListener('touchstart', (e) => { e.preventDefault(); keys.ArrowLeft = true; }); 
     document.getElementById('btn-left').addEventListener('touchend', (e) => { e.preventDefault(); keys.ArrowLeft = false; }); 
-    
-    // Movimiento Derecha
     document.getElementById('btn-right').addEventListener('touchstart', (e) => { e.preventDefault(); keys.ArrowRight = true; }); 
     document.getElementById('btn-right').addEventListener('touchend', (e) => { e.preventDefault(); keys.ArrowRight = false; }); 
 }
 
-// SALTO MEDIANTE TAP EN PANTALLA (CUALQUIER PARTE QUE NO SEAN LOS BOTONES)
 window.addEventListener('touchstart', (e) => {
     if (!gameActive) return;
-    
-    // Detectamos si el toque fue en los botones de dirección para NO saltar
     const isDirectionBtn = e.target.closest('#btn-left') || e.target.closest('#btn-right') || e.target.closest('#game-controls');
-    
-    if (!isDirectionBtn) {
-        saltar();
-    }
+    if (!isDirectionBtn) saltar();
 }, { passive: false });
 
 document.getElementById('btn-next-level').onclick = () => {  
@@ -287,7 +278,6 @@ function update() {
     if(player.x < 0) player.x = 0; if(player.x + player.width > canvas.width) player.x = canvas.width - player.width;  
      
     let vel = (currentLevel === 3) ? 13 : 8;  
- 
     obstacles.forEach(o => {  
         o.x -= vel;  
         if(player.x < o.x + 45 && player.x + player.width > o.x && player.y < o.y + 55 && player.y + player.height > o.y) morir();  
@@ -295,8 +285,7 @@ function update() {
  
     if(currentLevel === 1) {  
         for (let i = cacaos.length - 1; i >= 0; i--) { 
-            let c = cacaos[i]; 
-            c.x -= vel; 
+            let c = cacaos[i]; c.x -= vel; 
             if(player.x < c.x + 40 && player.x + player.width > c.x && player.y < c.y + 50 && player.y + player.height > c.y) {  
                 cacaos.splice(i, 1); score++; playSnd('snd-collect'); scoreValue.innerText = score + " / 10";  
                 if(score >= 10) { gameActive = false; playSnd('snd-win'); transicionSuave(() => { transitionOverlay.classList.remove('hidden'); }); }  
@@ -315,13 +304,9 @@ function draw() {
     ctx.clearRect(0,0, canvas.width, canvas.height);  
     ctx.fillStyle = (currentLevel === 3) ? '#444' : '#5d4037';  
     ctx.fillRect(0, canvas.height - 40, canvas.width, 40);  
-    cacaos.forEach(c => {  
-        if(cacaoImgReady) ctx.drawImage(imgCacao, c.x, c.y, 45, 55);  
-        else { ctx.fillStyle = '#ffcc00'; ctx.fillRect(c.x, c.y, 40, 50); }  
-    });  
+    cacaos.forEach(c => { if(cacaoImgReady) ctx.drawImage(imgCacao, c.x, c.y, 45, 55); else { ctx.fillStyle = '#ffcc00'; ctx.fillRect(c.x, c.y, 40, 50); } });  
     ctx.fillStyle = '#2d1a11'; obstacles.forEach(o => ctx.fillRect(o.x, o.y, 55, 65));  
-    if(playerImgReady) ctx.drawImage(imgPlayer, player.x, player.y, player.width, player.height);  
-    else { ctx.fillStyle = 'white'; ctx.fillRect(player.x, player.y, player.width, player.height); } 
+    if(playerImgReady) ctx.drawImage(imgPlayer, player.x, player.y, player.width, player.height); else { ctx.fillStyle = 'white'; ctx.fillRect(player.x, player.y, player.width, player.height); } 
 }  
  
 window.addEventListener('keydown', e => { if(keys.hasOwnProperty(e.key)) keys[e.key] = true; if(e.key === ' ') saltar(); }); 
